@@ -1,0 +1,6 @@
+SELECT
+    *
+FROM
+    books
+ORDER BY
+    price;

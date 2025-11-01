@@ -1,0 +1,9 @@
+-- Czy pojawiły się błędy?
+-- Nie bo usuwamy tabele przed jej stworzeniem
+-- Co oznaczają wyświetlane informacje?
+-- Started executing query at  Line 1
+-- Commands completed successfully.
+-- Total execution time: 00:00:00.038
+-- Oznaczają, że polecenia zostały wykonane pomyślnie <=> tabele zostały utworzone
+-- Co dzieje się jeśli wykonamy skrypt ponownie?
+-- Stworzone tabele zostaną usunięte, a potem utworzone na nowo
