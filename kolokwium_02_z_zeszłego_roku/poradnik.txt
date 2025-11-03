@@ -1,0 +1,63 @@
+Jeśli chcecie posprawdzać te zadania w MySQL Shell'u to (nie mogę się połączyć, mimo że jestem
+połączony przez vpn więc muszę pisać na czuja, ale powinno działać):
+
+1.SHOW DATABASES; (wyskoczą wam dostępne bazy danych u mnie to mikola10)
+
+2.USE mikola10; (na 99.9999% wiecie, ale na wszelki wy zamiast mikola10 wpisujecie to co wam wyskoczy po wpisaniu SHOW DATABASES;)
+
+3.CREATE TABLE Students (
+    student_id INT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    surname VARCHAR(50) NOT NULL
+);
+
+4.CREATE TABLE Grades (
+    name VARCHAR(5) NOT NULL,
+    grade DECIMAL(3, 1) NOT NULL,
+    student_id INT NOT NULL,
+    PRIMARY KEY (student_id, name),
+    FOREIGN KEY (student_id) REFERENCES STUDENTS (student_id)
+);
+
+5.INSERT INTO
+    Students (student_id, name, surname)
+VALUES
+    (12, 'Tomasz', 'Nowak'),
+    (23, 'Andrzej', 'Kowalski'),
+    (21, 'Irena', 'Nowak'),
+    (22, 'Irena', 'Kowalska'),
+    (56, 'Tomasz', 'Kowalski'),
+    (97, 'Anna', 'Lipinska'),
+    (90, 'Tomasz', 'Sikorski'),
+    (66, 'Adam', 'Sroka'),
+    (99, 'Julia', 'Nowicka');
+
+6.INSERT INTO
+    Grades (name, grade, student_id)
+VALUES
+    ('K1', 5, 12),
+    ('K1', 5, 21),
+    ('K1', 5, 23),
+    ('K1', 4, 22),
+    ('K1', 4, 56),
+    ('K1', 3, 90),
+    ('K1', 3, 97),
+    ('K2', 4, 12),
+    ('K2', 4, 23),
+    ('K2', 3, 21),
+    ('K2', 3, 22),
+    ('K3', 4, 12),
+    ('K3', 3, 23),
+    ('K3', 5, 21),
+    ('K3', 3, 99);
+
+7. Jak to powklejacie to powinny wam się utworzyć tabele potrzebne do tych zadań
+
+8. Możecie sobie to sprawdzić: SHOW TABLES;
+
+9. Jeśli są tabele to już możecie przeklejać/przepisywać zadania i sprawdzać wyniki :)
+
+10. Ewentualnie możecie jeszcze wpisać to:
+a) SELECT * FROM Students;
+b) SELECT * FROM Grades;
+i sprawdzić czy tabele zgadzają się z tym co jest na stronie: https://docs.google.com/document/d/1ndY6IrQQ2WPZnfu9uyz3TCk3-7L8GZN8
