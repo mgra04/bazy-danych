@@ -1,40 +1,22 @@
 /*
-4.Policz liczbę studentów, którzy napisali wszystkie kolokwia, ale uzyskali średnią ocenę poniżej 5.
-Wynik ma zawierać count_students.
+4. Wyświetl listę osób które w ogóle nie pisały żadnego kolokwium.
 */
--- Rozwiązanie 1
 SELECT
-    count(*) AS count_students
+    *
 FROM
-    (
+    Students
+WHERE
+    student_id NOT IN (
         SELECT
             student_id
         FROM
             Grades
-        GROUP BY
-            student_id
-        HAVING
-            count(DISTINCT name) = 3
-            AND avg(grade) < 5
-    ) AS temp;
+    );
 
--- Rozwiązanie 1' (nie wiemy, że różnych kolokwiów jest dokładnie 3)
-SELECT
-    count(*) AS count_students
-FROM
-    (
-        SELECT
-            student_id
-        FROM
-            Grades
-        GROUP BY
-            student_id
-        HAVING
-            count(DISTINCT name) = (
-                SELECT
-                    count(DISTINCT name)
-                FROM
-                    Grades
-            )
-            AND avg(grade) < 5
-    ) AS temp;
+/*
++------------+------+---------+
+| student_id | name | surname |
++------------+------+---------+
+|         66 | Adam | Sroka   |
++------------+------+---------+
+*/

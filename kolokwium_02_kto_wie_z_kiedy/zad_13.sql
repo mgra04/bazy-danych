@@ -1,5 +1,5 @@
 /*
-15. Wyświetl listę studentów, którzy pisali co najmniej 3 kolokwia
+13. Wyświetl listę studentów, którzy pisali dokładnie dwa kolokwia i uzyskali różne oceny
 */
 SELECT
     *
@@ -14,5 +14,6 @@ WHERE
         GROUP BY
             student_id
         HAVING
-            count(*) >= 3
+            count(*) = 2
+            AND count(DISTINCT grade) = 2
     );

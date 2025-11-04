@@ -1,19 +1,12 @@
 /*
-13. Wyświetl listę studentów, którzy pisali dokładnie dwa kolokwia i uzyskali różne oceny
+13. Kolokwia, gdzie maksymalna ocena była równa 5 i średnia ocen była wyższa niż 4.
 */
 SELECT
-    *
+    name
 FROM
-    Students
-WHERE
-    student_id IN (
-        SELECT
-            student_id
-        FROM
-            Grades
-        GROUP BY
-            student_id
-        HAVING
-            count(*) = 2
-            AND count(DISTINCT grade) = 2
-    );
+    Grades
+GROUP BY
+    name
+HAVING
+    avg(grade) > 4
+    AND max(grade) = 5;

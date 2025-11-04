@@ -1,36 +1,48 @@
 /*
-1.Wyświetl dane studentów, którzy pisali wszystkie dostępne kolokwia.
-Wynik ma zawierać student_id, name, i surname.
-Posortuj według nazwiska i imienia.
+1. Zastanów się jakim poleceniem można wyświetlić informację jak
+poniżej w tabelce a pochodzącą
+z tabel STUDENTS i GRADES zastosuj iloczyn kartezjański pamiętając,
+że sens mają tylko te krotki dla których: STUDENTS.student_id =
+GRADES.student_id
+
+_Polecenie ma uwzględniać sortowanie aby wynik był dokładnie taki
+jak poniżej (atrybuty) i posortowany kolejno po nazwisku, imieniu,
+numerze kolokwium i ocenie:_
 */
 SELECT
-    student_id,
-    name,
-    surname
+    s.name,
+    s.surname,
+    g.name,
+    g.grade
 FROM
-    Students
+    Students s,
+    Grades g
 WHERE
-    student_id IN (
-        SELECT
-            student_id
-        FROM
-            Grades
-        GROUP BY
-            student_id
-        HAVING
-            count(DISTINCT name) = 3
-    )
+    s.student_id = g.student_id
 ORDER BY
-    surname,
-    name;
+    s.surname,
+    s.name,
+    g.name,
+    g.grade;
 
--- Pomocnicze do wizaulizacji dlaczego tak (name w Grades to K1, K2 lub K3)
-SELECT
-    student_id,
-    count(DISTINCT name) AS liczba_kolokwiów
-FROM
-    Grades
-GROUP BY
-    student_id
-ORDER BY
-    liczba_kolokwiów DESC;
+/*
++---------+----------+------+-------+
+| name    | surname  | quiz | grade |
++---------+----------+------+-------+
+| Irena   | Kowalska | K1   |   4.0 |
+| Irena   | Kowalska | K2   |   3.0 |
+| Andrzej | Kowalski | K1   |   5.0 |
+| Andrzej | Kowalski | K2   |   4.0 |
+| Andrzej | Kowalski | K3   |   3.0 |
+| Tomasz  | Kowalski | K1   |   4.0 |
+| Anna    | Lipinska | K1   |   3.0 |
+| Irena   | Nowak    | K1   |   5.0 |
+| Irena   | Nowak    | K2   |   3.0 |
+| Irena   | Nowak    | K3   |   5.0 |
+| Tomasz  | Nowak    | K1   |   5.0 |
+| Tomasz  | Nowak    | K2   |   4.0 |
+| Tomasz  | Nowak    | K3   |   4.0 |
+| Julia   | Nowicka  | K3   |   3.0 |
+| Tomasz  | Sikorski | K1   |   3.0 |
++---------+----------+------+-------+
+*/

@@ -1,25 +1,37 @@
 /*
-5. Wyświetl dane studentów, którzy uzyskali dokładnie dwie różne oceny.
-Wynik ma zawierać student_id, name, i surname.
-Posortuj według nazwiska i imienia.
+5. Napisz polecenie wypisujące dane studenta i średnią ocenę
+uzyskaną przez niego z obu kolokwiów. Wynik winien być posortowany
+po liczbie kolokwiów napisanych przez daną osobę (malejąco),
+średniej ocenie (malejąco), nazwisku i imieniu. Wygląd (w tym nazwy
+kolumn) tak jak poniżej:
++---------+----------+----+------+
+| name    | surname  | no | avg  |
++---------+----------+----+------+
+| Irena   | Nowak    |  3 | 4.33 |
+| Tomasz  | Nowak    |  3 | 4.33 |
+| Andrzej | Kowalski |  3 | 4.00 |
+| Irena   | Kowalska |  2 | 3.50 |
+| Tomasz  | Kowalski |  1 | 4.00 |
+| Anna    | Lipinska |  1 | 3.00 |
+| Julia   | Nowicka  |  1 | 3.00 |
+| Tomasz  | Sikorski |  1 | 3.00 |
++---------+----------+----+------+
 */
 SELECT
-    student_id,
-    name,
-    surname
+    s.name,
+    s.surname,
+    count(*) AS no,
+    avg(g.grade) AS avg
 FROM
-    Students
+    Students s,
+    Grades g
 WHERE
-    student_id IN (
-        SELECT
-            student_id
-        FROM
-            Grades
-        GROUP BY
-            student_id
-        HAVING
-            count(DISTINCT grade) = 2
-    )
+    s.student_id = g.student_id
+GROUP BY
+    s.name,
+    s.surname
 ORDER BY
-    surname,
-    name;
+    no DESC,
+    avg DESC,
+    s.surname,
+    s.name;

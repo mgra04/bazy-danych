@@ -1,0 +1,539 @@
+Szanowny Panie Doktorze, wysyłam odpowiedzi do kolokwium (są pod treścią zadań)
+
+W dniu 12.12.2024 11:36, Tomasz Orzechowski napisał(a):
+Poniżej przedstawiono kolejno tabele STUDENTS i GRADES które są
+wykorzystywana w kolejnych zadaniach.
+
+Uwaga:  W zadaniach przedstawiono wynik jaki ma być zwrócony przez
+określone
+zapytanie. Proszę uwzględnić nazwy atrybutów i stosowne sortowanie
+wyników.
+
+name
+surname
+student_id
+
+name
+grade
+student_id
+
+Tomasz
+Nowak
+12
+
+K1
+5
+12
+
+Andrzej
+Kowalski
+23
+
+K1
+5
+21
+
+Irena
+Nowak
+21
+
+K1
+4
+22
+
+Irena
+Kowalska
+22
+
+K1
+5
+23
+
+Tomasz
+Kowalski
+56
+
+K1
+4
+56
+
+Anna
+Lipinska
+97
+
+K1
+3
+90
+
+Tomasz
+Sikorski
+90
+
+K1
+3
+97
+
+Adam
+Sroka
+66
+
+K2
+4
+12
+
+Julia
+Nowicka
+99
+
+K2
+3
+21
+
+K2
+3
+22
+
+K2
+4
+23
+
+K3
+4
+12
+
+K3
+5
+21
+
+K3
+3
+23
+
+K3
+3
+99
+
+__
+
+-- Usunięcie tabel, jeśli istnieją
+
+DROP TABLE IF EXISTS GRADES;
+
+DROP TABLE IF EXISTS STUDENTS;
+
+-- Tworzenie tabeli STUDENTS
+
+CREATE TABLE STUDENTS (
+
+   student_id INT PRIMARY KEY,
+
+   name VARCHAR(50) NOT NULL,
+
+   surname VARCHAR(50) NOT NULL
+
+);
+
+-- Tworzenie tabeli GRADES
+
+CREATE TABLE GRADES (
+
+   name VARCHAR(5) NOT NULL,
+
+   grade DECIMAL(3, 1) NOT NULL,
+
+   student_id INT NOT NULL,
+
+   PRIMARY KEY (student_id, name),
+
+   FOREIGN KEY (student_id) REFERENCES STUDENTS(student_id)
+
+);
+
+-- Wstawianie danych do tabeli STUDENTS
+
+INSERT INTO STUDENTS (student_id, name, surname) VALUES
+
+(12, 'Tomasz', 'Nowak’), (23, 'Andrzej', 'Kowalski’), (21,
+'Irena', 'Nowak’), (22, 'Irena', 'Kowalska’), (56, 'Tomasz',
+'Kowalski’), (97, 'Anna', 'Lipinska’), (90, 'Tomasz',
+'Sikorski’), (66, 'Adam', 'Sroka’), (99, 'Julia', 'Nowicka');
+
+-- Wstawianie danych do tabeli GRADES
+
+INSERT INTO GRADES (name, grade, student_id) VALUES
+
+('K1', 5, 12), ('K1', 5, 21), ('K1', 5, 23), ('K1', 4, 22), ('K1', 4,
+56), ('K1', 3, 90), ('K1', 3, 97), ('K2', 4, 12), ('K2', 4, 23),
+('K2', 3, 21), ('K2', 3, 22), ('K3', 4, 12), ('K3', 3, 23), ('K3', 5,
+21), ('K3', 3, 99);
+
+UWAGA:
+
+ZADANIA są punktowane TAK SAMO: 1 pkt za poprawne i działające
+zadanie.
+
+Z zadań 1-12 należy wykonać 11, a z zadań 13-15, dwa zadania.
+
+Jeśli któreś sprawia trudność, to proszę przejść dalej.
+
+Proszę o odpowiedzi = kompletny KOD SQL jako REPLY pod każdym z
+zadań.
+
+1. Zastanów się jakim poleceniem można wyświetlić informację jak
+poniżej w tabelce a pochodzącą
+z tabel STUDENTS i GRADES zastosuj iloczyn kartezjański pamiętając,
+że sens mają tylko te krotki dla których: STUDENTS.student_id =
+GRADES.student_id
+
+_Polecenie ma uwzględniać sortowanie aby wynik był dokładnie taki
+jak poniżej (atrybuty) i posortowany kolejno po nazwisku, imieniu,
+numerze kolokwium i ocenie:_
+
++---------+----------+------+-------+
+| name    | surname  | quiz | grade |
++---------+----------+------+-------+
+| Irena   | Kowalska | K1   |   4.0 |
+| Irena   | Kowalska | K2   |   3.0 |
+| Andrzej | Kowalski | K1   |   5.0 |
+| Andrzej | Kowalski | K2   |   4.0 |
+| Andrzej | Kowalski | K3   |   3.0 |
+| Tomasz  | Kowalski | K1   |   4.0 |
+| Anna    | Lipinska | K1   |   3.0 |
+| Irena   | Nowak    | K1   |   5.0 |
+| Irena   | Nowak    | K2   |   3.0 |
+| Irena   | Nowak    | K3   |   5.0 |
+| Tomasz  | Nowak    | K1   |   5.0 |
+| Tomasz  | Nowak    | K2   |   4.0 |
+| Tomasz  | Nowak    | K3   |   4.0 |
+| Julia   | Nowicka  | K3   |   3.0 |
+| Tomasz  | Sikorski | K1   |   3.0 |
++---------+----------+------+-------+
+
+SELECT
+    STUDENTS.name,
+    STUDENTS.surname,
+    GRADES.name AS quiz,
+    GRADES.grade
+FROM
+    STUDENTS, GRADES
+WHERE
+    STUDENTS.student_id = GRADES.student_id
+ORDER BY
+    STUDENTS.surname,
+    STUDENTS.name,
+    GRADES.name,
+    GRADES.grade;
+
+
+2. Napisz polecenie wyświetlające liczbę osób piszących dane
+kolokwium, tak jak poniżej:
+
++------+---------+ _Wynik polecenia ma wyglądać dokładnie tak jak
+pokazano obok _(atrybuty)
+| quiz | numbers |_ i być posortowany po atrybucie: __name_
++------+---------+
+| K1   |       7 |
+| K2   |       4 |
+| K3   |       4 |
++------+---------+
+
+SELECT name AS quiz, COUNT(*) AS numbers from GRADES GROUP BY quiz;
+
+3. Napisz polecenie wypisujące średnią ocenę z każdego kolokwium
+posortowaną po tej średniej (rosnąco):
+
++------+---------+ _ Wynik polecenia ma wyglądać dokładnie tak jak
+pokazano obok._
+| quiz | average |
++------+---------+
+| K2   | 3.50000 |
+| K3   | 3.75000 |
+| K1   | 4.14286 |
++------+---------+
+
+SELECT name AS quiz, AVG(grade) AS average FROM GRADES GROUP BY quiz ORDER BY average;
+
+4. Wyświetl listę osób które w ogóle nie pisały żadnego
+kolokwium.
+SELECT * FROM STUDENTS WHERE STUDENTS.student_id NOT IN (SELECT student_id FROM GRADES);
+
++------------+------+---------+
+| student_id | name | surname |
++------------+------+---------+
+|         66 | Adam | Sroka   |
++------------+------+---------+
+5. Napisz polecenie wypisujące dane studenta i średnią ocenę
+uzyskaną przez niego z obu kolokwiów. Wynik winien być posortowany
+po liczbie kolokwiów napisanych przez daną osobę (malejąco),
+średniej ocenie (malejąco), nazwisku i imieniu. Wygląd (w tym nazwy
+kolumn) tak jak poniżej:
++---------+----------+----+------+
+| name    | surname  | no | avg  |
++---------+----------+----+------+
+| Irena   | Nowak    |  3 | 4.33 |
+| Tomasz  | Nowak    |  3 | 4.33 |
+| Andrzej | Kowalski |  3 | 4.00 |
+| Irena   | Kowalska |  2 | 3.50 |
+| Tomasz  | Kowalski |  1 | 4.00 |
+| Anna    | Lipinska |  1 | 3.00 |
+| Julia   | Nowicka  |  1 | 3.00 |
+| Tomasz  | Sikorski |  1 | 3.00 |
++---------+----------+----+------+
+SELECT
+    STUDENTS.name,
+    STUDENTS.surname,
+    COUNT(GRADES.grade) AS no,
+    ROUND(AVG(GRADES.grade), 2) AS avg
+FROM
+    STUDENTS
+JOIN
+    GRADES
+ON
+    STUDENTS.student_id = GRADES.student_id
+GROUP BY
+    STUDENTS.name, STUDENTS.surname
+ORDER BY
+    no DESC,
+    avg DESC,
+    STUDENTS.surname,
+    STUDENTS.name;
+
+6. Wyświetl listę osób które pisały tylko jedno kolokwium. Wynik
+tak jak poniżej:
+
++------------+--------+----------+
+| student_id | name   | surname  |
++------------+--------+----------+
+|         56 | Tomasz | Kowalski |
+|         90 | Tomasz | Sikorski |
+|         97 | Anna   | Lipinska |
+|         99 | Julia  | Nowicka  |
++------------+--------+----------+
+SELECT
+    STUDENTS.student_id,
+    STUDENTS.name,
+    STUDENTS.surname
+FROM
+    STUDENTS, GRADES
+WHERE
+    STUDENTS.student_id = GRADES.student_id
+GROUP BY
+    STUDENTS.name, STUDENTS.surname
+HAVING
+    COUNT(GRADES.grade) = 1
+ORDER BY
+    STUDENTS.student_id,
+    STUDENTS.surname,
+    STUDENTS.name;
+
+7. Utwórz zapytanie które w efekcie zwróci taki wynik jak poniżej,
+tj. złożenie wszystkich imion oraz tylko tych nazwisk które nie
+zawierają końcowek "cki", "cka", "ski", "ska" (wymagane użycie
+stosownego wzorca).
+Nie sortuj.          _Podpowiedź__: przydatny będzie iloczyn
+kartezjański._
+
++---------+---------+
+| name    | surname |
++---------+---------+
+| Tomasz  | Nowak   |
+| Irena   | Nowak   |
+| Andrzej | Nowak   |
+| Adam    | Nowak   |
+| Anna    | Nowak   |
+| Julia   | Nowak   |
+| Tomasz  | Sroka   |
+| Irena   | Sroka   |
+| Andrzej | Sroka   |
+| Adam    | Sroka   |
+| Anna    | Sroka   |
+| Julia   | Sroka   |
++---------+---------+
+SELECT DISTINCT
+    STUDENTS.name,
+    OTHER.surname
+FROM
+    STUDENTS, STUDENTS AS OTHER
+WHERE
+    OTHER.surname NOT LIKE '%cki'
+    AND OTHER.surname NOT LIKE '%cka'
+    AND OTHER.surname NOT LIKE '%ski'
+    AND OTHER.surname NOT LIKE '%ska';
+
+
+8. Utwórz bardzo podobne zapytanie jak w poprzednim punkcie lecz tym
+razem wynik powinien wyglądać jak poniżej.  _Podpowiedź__:
+wskazane użycie iloczynu kartezjańskiego i unii... do tego należy
+posortować kolejno po gender, surname i name_
+
++---------+---------+--------+
+| name    | surname | gender |
++---------+---------+--------+
+| Anna    | Nowak   | F      |
+| Irena   | Nowak   | F      |
+| Julia   | Nowak   | F      |
+| Anna    | Sroka   | F      |
+| Irena   | Sroka   | F      |
+| Julia   | Sroka   | F      |
+| Adam    | Nowak   | M      |
+| Andrzej | Nowak   | M      |
+| Tomasz  | Nowak   | M      |
+| Adam    | Sroka   | M      |
+| Andrzej | Sroka   | M      |
+| Tomasz  | Sroka   | M      |
++---------+---------+--------+
+SELECT DISTINCT
+    STUDENTS.name,
+    OTHER.surname,
+    CASE
+        WHEN STUDENTS.name LIKE '%a' THEN 'F'
+        ELSE 'M'
+    END AS gender
+FROM
+    STUDENTS, STUDENTS AS OTHER
+WHERE
+    OTHER.surname NOT LIKE '%cki'
+    AND OTHER.surname NOT LIKE '%cka'
+    AND OTHER.surname NOT LIKE '%ski'
+    AND OTHER.surname NOT LIKE '%ska'
+ORDER BY
+    gender,
+    OTHER.surname,
+    STUDENTS.name;
+
+_Podpowiedź_:
+
+select 'F' from STUDENTS limit 3;
+
++---+
+| F |
++---+
+| F |
+| F |
+| F |
++---+
+
+select 'F' abc from STUDENTS limit 3;
++-----+
+| abc |
++-----+
+| F   |
+| F   |
+| F   |
++-----+
+
+select *, 'F' as 'co to jest' from STUDENTS order by surname, name
+limit 3;
++------------+---------+----------+------------+
+| student_id | name    | surname  | co to jest |
++------------+---------+----------+------------+
+|         22 | Irena   | Kowalska | F          |
+|         23 | Andrzej | Kowalski | F          |
+|         56 | Tomasz  | Kowalski | F          |
++------------+---------+----------+------------+
+
+9. Wyświetl dane studentów, którzy uzyskali najwyższą ocenę z
+każdego kolokwium.
+
+_Podpowiedź_: wskazane użycie iloczynu kartezjańskiego.
+Należy posortować kolejno po quiz, surname i name
+
++---------+----------+------+-------+
+| name    | surname  | quiz | grade |
++---------+----------+------+-------+
+| Andrzej | Kowalski | K1   |   5.0 |
+| Irena   | Nowak    | K1   |   5.0 |
+| Tomasz  | Nowak    | K1   |   5.0 |
+| Andrzej | Kowalski | K2   |   4.0 |
+| Tomasz  | Nowak    | K2   |   4.0 |
+| Irena   | Nowak    | K3   |   5.0 |
++---------+----------+------+-------+
+SELECT
+    S.name,
+    S.surname,
+    G.name AS quiz,
+    G.grade
+FROM
+    STUDENTS S, GRADES G
+WHERE
+    S.student_id = G.student_id
+    AND G.grade = (
+        SELECT MAX(G2.grade)
+        FROM GRADES G2
+        WHERE G2.name = G.name
+    )
+ORDER BY
+    G.name, S.surname, S.name;
+
+10. Znajdź studentów, którzy uzyskali różne oceny na przynajmniej
+dwóch kolokwiach.
+
+_Wynik jak poniżej_
+
++------------+---------+----------+
+| student_id | name    | surname  |
++------------+---------+----------+
+|         12 | Tomasz  | Nowak    |
+|         21 | Irena   | Nowak    |
+|         22 | Irena   | Kowalska |
+|         23 | Andrzej | Kowalski |
++------------+---------+----------+
+SELECT DISTINCT STUDENTS.student_id, STUDENTS.name, STUDENTS.surname
+FROM STUDENTS
+WHERE (
+        SELECT COUNT(DISTINCT grade)
+        FROM GRADES
+        WHERE GRADES.student_id = STUDENTS.student_id
+    ) >= 2
+ORDER BY STUDENTS.student_id;
+
+11. Jaka jest liczba unikalnych studentów, którzy we wszystkich
+swoich wynikach kolokwiów nie mają oceny poniżej 4?
+
+_Podpowiedź_: Czyli: Ilu studentów, gdzie każdy liczony jest tylko
+jeden raz uzyskało wyłącznie oceny co najmniej 4 na wszystkich
+kolokwiach?
+Wynik jak poniżej
+
++------------------+
+| Liczba Studentów |
++------------------+
+|                2 |
++------------------+
+SELECT COUNT(DISTINCT student_id) AS "Liczba Studentow"
+FROM GRADES
+WHERE  student_id NOT IN (SELECT student_id FROM GRADES WHERE grade < 4);
+
+
+12. Jaka jest liczba unikalnych studentów, którzy w swoich wynikach
+kolokwiów uzyskali ocenę nie niższą niż 4?
+
+_Podpowiedź_: Czyli: Ilu studentów, gdzie każdy liczony jest tylko
+jeden raz uzyskało przynajmniej raz ocenę co najmniej 4 na
+kolokwium?
+Wynik jak poniżej
+
++------------------+
+| Liczba Studentów |
++------------------+
+|                5 |
++------------------+
+SELECT
+    COUNT(DISTINCT STUDENTS.student_id) AS "Liczba Studentow"
+FROM
+    STUDENTS, GRADES
+WHERE
+    STUDENTS.student_id = GRADES.student_id
+    AND GRADES.grade >= 4;
+
+
+13. Kolokwia, gdzie maksymalna ocena była równa 5 i średnia ocen
+była wyższa niż 4.
+SELECT name FROM GRADES GROUP BY name HAVING MAX(grade) = 5 AND AVG(grade) > 4;
+
+
+14. Kolokwia, na których średnia ocen jest dokładnie równa 4.
+SELECT name FROM GRADES GROUP BY name HAVING AVG(grade) = 4;
+
+15. Wyświetl listę studentów, którzy pisali co najmniej 3 kolokwia
+SELECT name, surname FROM STUDENTS WHERE student_id IN (SELECT student_id FROM GRADES GROUP BY student_id HAVING count(*) >=3);
