@@ -12,7 +12,7 @@ pod zadaniem dał tabelkę z prawidłową odpowiedzią (czy odpowiedziom? idk s�
 w której K2 się powiela więc orzeszek odjebał z poleceniem do zadania...
 */
 -- Rozwiązanie 1 (dla kolokwium drugiego wyświetla dwie dominujące oceny.
--- Niby tak jak w tabelce która pokazuje prawidłowy wynik, ale nie zgodnie z poleceniem)
+-- Niby tak jak w tabelce która pokazuje prawidłowy wynik, ale niezgodnie z poleceniem)
 SELECT
     g1.name AS quiz,
     g1.grade AS dominant_grade,
